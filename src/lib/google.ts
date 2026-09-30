@@ -20,3 +20,15 @@ export function adsTxt(publisher = adsensePublisherId()): string | undefined {
     ? `google.com, ${publisher}, DIRECT, f08c47fec0942fa0\n`
     : undefined;
 }
+// The AdSense tag also delivers Google's consent message (the certified CMP).
+// It is opt-in through ADSENSE_ENABLE_TAG=true. No ad unit is rendered by it:
+// AdSlot stays disabled until the site is approved.
+export function adsenseTagUrl(
+  publisher = adsensePublisherId(),
+  enabled = process.env.ADSENSE_ENABLE_TAG === "true",
+): string | undefined {
+  return publisher && enabled
+    ? "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-" +
+        publisher
+    : undefined;
+}

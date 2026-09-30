@@ -3,7 +3,12 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { admin } from "@/lib/auth";
 import { AnalyticsControls } from "@/components/analytics";
-import { adsensePublisherId, analyticsMeasurementId } from "@/lib/google";
+import Script from "next/script";
+import {
+  adsensePublisherId,
+  adsenseTagUrl,
+  analyticsMeasurementId,
+} from "@/lib/google";
 import "./globals.css";
 export const dynamic = "force-dynamic";
 const publisher = adsensePublisherId();
@@ -26,6 +31,7 @@ export default async function RootLayout({
 }) {
   const editor = !!(await admin());
   const initialChoice = (await cookies()).get("sa_analytics")?.value ?? "";
+  const adsenseTag = adsenseTagUrl();
   return (
     <html lang="en">
       <body>
@@ -91,6 +97,14 @@ export default async function RootLayout({
             </div>
           </div>
         </footer>
+        {adsenseTag && (
+          <Script
+            async
+            src={adsenseTag}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         <AnalyticsControls
           editor={editor}
           initialChoice={initialChoice}

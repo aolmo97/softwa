@@ -50,3 +50,14 @@ describe("operator details gate", () => {
       expect(operatorDetailsComplete(op, mail)).toBe(false);
   });
 });
+
+import { adsenseTagUrl } from "../src/lib/google";
+describe("AdSense tag", () => {
+  it("loads only when a valid publisher is set and the tag is enabled", () => {
+    expect(adsenseTagUrl("pub-8400214805838883", true)).toBe(
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8400214805838883",
+    );
+    expect(adsenseTagUrl("pub-8400214805838883", false)).toBeUndefined();
+    expect(adsenseTagUrl(undefined, true)).toBeUndefined();
+  });
+});
