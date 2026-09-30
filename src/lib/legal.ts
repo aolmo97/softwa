@@ -26,12 +26,14 @@ export const legalPages: Record<
     title: "Privacy Policy",
     ownerRequired: true,
     paragraphs: [
-      "Search and comparison browsing do not require an account. No third-party analytics or advertising scripts are installed. Optional first-party analytics run only after you choose Allow analytics; you can decline or withdraw permission using Analytics preferences in the footer.",
+      "Search and comparison browsing do not require an account. Optional analytics run only after you choose Allow analytics; you can decline or withdraw permission using Analytics preferences in the footer. No advertising scripts are currently loaded.",
+      "Google Analytics: with your permission this site also uses Google Analytics 4, provided by Google, to measure visits. Google receives the page path, browser and device details and technical data such as your IP address in order to provide the service. Google signals and advertising personalisation are disabled, query strings are not sent, and events stop when you decline or withdraw permission. Retention settings are configured in the Analytics property and the operator must document them.",
+      "Advertising: the operator has applied to Google AdSense. No advertisements are displayed yet. Before any are shown, a consent message will be presented as required and this policy will be updated.",
       "With permission, analytics records public page paths, catalogue tools searched or viewed, search result counts, filters, match completion counts, referring domains and broad viewport sizes. Random browser and session identifiers are stored as hashes. The application does not store IP addresses, raw search text, full referrer URLs, match criteria or account identities in analytics. These pseudonymous events are retained for 180 days and reported to signed-in editors as aggregate counts.",
       "A visitor count estimates browsers that accepted analytics, not individual people. Analytics respects Do Not Track and Global Privacy Control signals, and excludes signed-in editors and recognised bots. Withdrawing permission stops future collection and removes the analytics identifier cookies; previously recorded events expire under the retention period.",
       "Editorial accounts store a username and a salted password hash. Sign-in creates a necessary HttpOnly session cookie with an eight-hour lifetime. The database retains session hashes, short-lived request counters and an editorial audit trail.",
       "The hosting provider may process IP addresses and access logs. The operator must document the actual hosting provider, logging settings, retention periods, legal bases, rights and contact details before public launch.",
-      "Outbound links take you to independent vendors, whose privacy practices apply on their sites. Any future third-party analytics or advertising integration requires a review of these notices and consent controls.",
+      "Outbound links take you to independent vendors, whose privacy practices apply on their sites. Any further third-party analytics or advertising integration requires a review of these notices and consent controls.",
     ],
   },
   cookies: {
@@ -40,7 +42,8 @@ export const legalPages: Record<
     paragraphs: [
       "Public browsing does not require application cookies. The editorial admin uses sa_admin, an essential session cookie lasting up to eight hours. It is HttpOnly, SameSite=Strict and Secure when deployed over HTTPS.",
       "The sa_analytics preference cookie remembers your allow or decline choice for 180 days. Optional analytics identifier cookies are created only after permission: sa_visitor lasts up to 180 days and sa_visit expires after 30 minutes without a recorded event. These identifiers are random, HttpOnly, SameSite=Lax and Secure on HTTPS deployments. They are not used for advertising.",
-      "Use Analytics preferences in the footer to change your choice. Declining removes sa_visitor and sa_visit and stops future measurement. Analytics uses no browser local storage and sends no events to external providers. Browser Do Not Track and Global Privacy Control signals prevent event recording.",
+      "Use Analytics preferences in the footer to change your choice. Declining removes sa_visitor and sa_visit and stops future measurement. Our own analytics uses no browser local storage and sends no events to external providers. Browser Do Not Track and Global Privacy Control signals prevent event recording.",
+      "Google Analytics cookies: after you allow analytics, Google Analytics sets _ga and _ga_<container ID>, which last up to two years and distinguish browsers and sessions. Declining or withdrawing permission stops sending and removes them. They are not used for advertising on this site.",
       "The operator must review cookies added by the final hosting stack and any future monetization integrations, and update this policy and consent controls as appropriate.",
     ],
   },
@@ -59,7 +62,7 @@ export const legalPages: Record<
     paragraphs: [
       "Some links may be affiliate links. If you follow an enabled partner link and make a purchase, the site may receive a commission. An affiliate link is labeled as a partner link and carries sponsored and nofollow attributes.",
       "Sponsored listings are visibly marked. Premium status can support an enhanced listing, but neither payment nor commission changes the recommendation formula or its ordering.",
-      "No affiliate program or advertisement is enabled in the initial catalogue. Commercial integrations require actual publisher accounts and a review of the final privacy and consent behavior.",
+      "No affiliate program is enabled and no advertisement is currently displayed. The operator has applied to Google AdSense; if advertising starts, ads will be labeled, will never affect match scores and will load only after the required consent controls are in place.",
     ],
   },
   contact: {

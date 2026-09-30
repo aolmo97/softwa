@@ -108,3 +108,11 @@ docker compose exec app node dist/db.cjs backup
 2. Complete SITE_OPERATOR and CONTACT_EMAIL, and review the legal drafts before public launch.
 3. Activate monetization only when actual provider accounts and approved partner URLs are available.
 4. Continue editorial verification of explicit unknowns; retain the true consultation dates.
+
+## Google Analytics 4 and AdSense preparation — 2026-09-30
+- Added `GA_MEASUREMENT_ID` and `ADSENSE_PUBLISHER_ID` runtime variables (both validated by format in `src/lib/google.ts`; empty means disabled).
+- GA4 loads only after Allow analytics, respects DNT/GPC, keeps ad/personalisation signals denied, sends page path without query strings and is stopped with its `_ga*` cookies removed on decline/withdrawal. CSP now allows only Google Analytics/Tag Manager hosts.
+- `ADSENSE_PUBLISHER_ID` serves `/ads.txt` and the `google-adsense-account` verification meta tag. No AdSense script is loaded and no ads are shown; `AdSlot` stays disabled.
+- Privacy, cookie and affiliate-disclosure copy updated to match. Match scoring is unchanged.
+- Open items: Google-certified CMP (Funding Choices) is required before serving ads in the EEA; AdSense approval and content sufficiency are not guaranteed (another site on the same AdSense account shows "low value content"); GA property data-retention setting and operator legal details (`SITE_OPERATOR`) still to be completed by the owner.
+- Verification: lint, typecheck, 61 unit tests and production build passed. Full E2E run: 19 passed, 1 failed (`analytics.spec.ts` session-cookie rotation); the same spec passed on isolated reruns both with and without the Google variables, so it looks timing-related under load rather than caused by this change.

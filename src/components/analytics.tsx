@@ -75,12 +75,73 @@ export function track(
     })
     .catch(() => undefined);
 }
+type GoogleWindow = Window & {
+  dataLayer?: unknown[];
+  gtag?: (...args: unknown[]) => void;
+  [flag: `ga-disable-${string}`]: boolean | undefined;
+};
+const googleWindow = () => window as unknown as GoogleWindow;
+function signalsAllow() {
+  return (
+    navigator.doNotTrack !== "1" &&
+    !(navigator as Navigator & { globalPrivacyControl?: boolean })
+      .globalPrivacyControl
+  );
+}
+// Google Analytics 4 is loaded only after the visitor allows analytics. Ad and
+// personalisation signals stay denied, and page views are sent manually with
+// the path only so query strings (which can hold search text) never leave.
+function startGoogle(id: string) {
+  const w = googleWindow();
+  w[`ga-disable-${id}`] = false;
+  if (w.gtag) return;
+  w.dataLayer = w.dataLayer || [];
+  w.gtag = function () {
+    // eslint-disable-next-line prefer-rest-params
+    w.dataLayer!.push(arguments);
+  };
+  w.gtag("consent", "default", {
+    analytics_storage: "granted",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  });
+  w.gtag("js", new Date());
+  w.gtag("config", id, {
+    send_page_view: false,
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+  });
+  const script = document.createElement("script");
+  script.async = true;
+  script.src =
+    "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id);
+  document.head.appendChild(script);
+}
+function stopGoogle(id: string) {
+  googleWindow()[`ga-disable-${id}`] = true;
+  const parts = location.hostname.split(".");
+  const domains = new Set([
+    location.hostname,
+    "." + location.hostname,
+    "." + parts.slice(-2).join("."),
+  ]);
+  for (const pair of document.cookie.split("; ")) {
+    const name = pair.split("=")[0];
+    if (!/^_ga(_|$)/.test(name)) continue;
+    for (const domain of domains)
+      document.cookie = `${name}=; Max-Age=0; path=/; domain=${domain}`;
+    document.cookie = `${name}=; Max-Age=0; path=/`;
+  }
+}
 export function AnalyticsControls({
   initialChoice = "",
   editor = false,
+  googleId,
 }: {
   initialChoice?: string;
   editor?: boolean;
+  googleId?: string;
 }) {
   const pathname = usePathname();
   const [choice, setChoice] = useState(initialChoice);
@@ -103,6 +164,17 @@ export function AnalyticsControls({
     lastPath.current = pathname;
     track("page_view", { referrer });
   }, [choice, pathname, excluded]);
+  useEffect(() => {
+    if (!googleId || excluded) return;
+    if (choice === "accepted" && signalsAllow()) {
+      startGoogle(googleId);
+      googleWindow().gtag?.("event", "page_view", {
+        page_path: pathname,
+        page_location: location.origin + pathname,
+        page_title: document.title,
+      });
+    } else stopGoogle(googleId);
+  }, [choice, pathname, excluded, googleId]);
   async function choose(next: "accepted" | "declined") {
     setBusy(true);
     setError("");
@@ -141,9 +213,11 @@ export function AnalyticsControls({
           <div>
             <strong>Help us improve software discovery</strong>
             <p>
-              Allow optional first-party analytics to count visits and tool
-              interest? We use random cookie identifiers, not names or IP
-              addresses. <Link href="/cookies">Cookie details</Link>
+              Allow optional analytics to count visits and tool interest?{" "}
+              {googleId
+                ? "This includes our own counters (random identifiers, no names or IP addresses) and Google Analytics, which sets cookies and sends usage data to Google. Advertising features stay off. "
+                : "We use random cookie identifiers, not names or IP addresses. "}
+              <Link href="/cookies">Cookie details</Link>
             </p>
           </div>
           <div className="consent-actions">

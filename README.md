@@ -93,7 +93,7 @@ Sponsored, premium and affiliate fields do not participate in the algorithm. Det
 
 Password hashes use scrypt with random salts. Session tokens are random, stored hashed and expire after eight hours. Cookies are HttpOnly and SameSite=Strict; use COOKIE_SECURE=true on public HTTPS deployments. Mutations require the configured public origin. JSON body size is bounded while streaming; all input is validated; SQL data uses bound parameters. Login and matcher limits persist in SQLite.
 
-The application sends no third-party analytics or ad requests. Provider-neutral browser events remain available through the `software-alternative:analytics` CustomEvent. First-party measurement requires an explicit Allow analytics choice; declining or withdrawing consent stops collection. The privacy and cookie pages describe the stored information.
+By default the application sends no third-party analytics or ad requests. Setting `GA_MEASUREMENT_ID` enables Google Analytics 4, which is loaded only after Allow analytics, respects DNT/GPC, keeps ad and personalisation signals denied, sends the path without query strings and is stopped (cookies removed) when consent is declined or withdrawn. Setting `ADSENSE_PUBLISHER_ID` serves `/ads.txt` and the `google-adsense-account` verification meta tag; no AdSense script is loaded and no ads are shown. Serving ads in the EEA additionally needs a Google-certified consent management platform, which is not implemented here. Provider-neutral browser events remain available through the `software-alternative:analytics` CustomEvent. First-party measurement requires an explicit Allow analytics choice; declining or withdrawing consent stops collection. The privacy and cookie pages describe the stored information.
 
 ## Backoffice analytics
 
@@ -138,6 +138,8 @@ SITE_URL=https://software-alternative.com
 COOKIE_SECURE=true
 SITE_OPERATOR=Your actual legal operator
 CONTACT_EMAIL=Your real public contact address
+GA_MEASUREMENT_ID=G-XXXXXXXXXX
+ADSENSE_PUBLISHER_ID=pub-XXXXXXXXXXXXXXXX
 PORT=3000
 ```
 

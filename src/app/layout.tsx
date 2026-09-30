@@ -3,10 +3,14 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { admin } from "@/lib/auth";
 import { AnalyticsControls } from "@/components/analytics";
+import { adsensePublisherId, analyticsMeasurementId } from "@/lib/google";
 import "./globals.css";
 export const dynamic = "force-dynamic";
+const publisher = adsensePublisherId();
 export const metadata: Metadata = {
   icons: { icon: "/icon.svg" },
+  // Site-ownership verification for AdSense. It makes no network request.
+  ...(publisher && { other: { "google-adsense-account": "ca-" + publisher } }),
   metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
   title: {
     default: "Software Alternative — Find your next favorite tool",
@@ -85,7 +89,11 @@ export default async function RootLayout({
             </div>
           </div>
         </footer>
-        <AnalyticsControls editor={editor} initialChoice={initialChoice} />
+        <AnalyticsControls
+          editor={editor}
+          initialChoice={initialChoice}
+          googleId={analyticsMeasurementId()}
+        />
       </body>
     </html>
   );
