@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { legalPages } from "@/lib/legal";
+import { legalPages, operatorDetailsComplete } from "@/lib/legal";
 import { Breadcrumbs } from "@/components/ui";
 import { metadata as meta } from "@/lib/seo";
 type Props = { params: Promise<{ page: string }> };
@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props) {
         p.title,
         p.paragraphs[0].slice(0, 160),
         "/" + slug,
-        !!p.ownerRequired,
+        !!p.ownerRequired && !operatorDetailsComplete(),
       )
     : meta("Not found", "Page not found.", "/", true);
 }
@@ -31,7 +31,7 @@ export default async function Information({ params }: Props) {
         <h1>{page.title}</h1>
       </div>
       <article className="prose">
-        {page.ownerRequired && (
+        {page.ownerRequired && !operatorDetailsComplete() && (
           <p className="notice">
             Publication draft: operator details, hosting information and
             applicable legal terms need to be completed and reviewed before

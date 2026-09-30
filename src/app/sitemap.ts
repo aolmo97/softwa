@@ -6,6 +6,7 @@ import {
   comparisonSlug,
 } from "@/lib/discovery";
 import { siteUrl } from "@/lib/seo";
+import { operatorDetailsComplete } from "@/lib/legal";
 export const dynamic = "force-dynamic";
 export default function sitemap(): MetadataRoute.Sitemap {
   const all = catalogue();
@@ -17,6 +18,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/compare",
     "/about",
     "/methodology",
+    ...(operatorDetailsComplete()
+      ? ["/privacy", "/cookies", "/terms", "/contact"]
+      : []),
     ...all.flatMap((s) => ["/software/" + s.slug, "/alternatives/" + s.slug]),
     ...taxonomy("categories")
       .filter((c) => all.some((s) => s.categories.includes(c.slug)))

@@ -36,3 +36,17 @@ describe("optional Google integrations", () => {
     expect(adsTxt(undefined)).toBeUndefined();
   });
 });
+
+import { operatorDetailsComplete } from "../src/lib/legal";
+describe("operator details gate", () => {
+  it("requires an operator name and a valid contact email", () => {
+    expect(operatorDetailsComplete("Jane Doe", "jane@example.com")).toBe(true);
+    for (const [op, mail] of [
+      [undefined, "jane@example.com"],
+      ["  ", "jane@example.com"],
+      ["Jane Doe", undefined],
+      ["Jane Doe", "not-an-email"],
+    ] as const)
+      expect(operatorDetailsComplete(op, mail)).toBe(false);
+  });
+});

@@ -1,3 +1,13 @@
+// Owner-required pages stay noindex drafts until the operator has supplied a
+// name and a valid public contact address.
+export function operatorDetailsComplete(
+  operator = process.env.SITE_OPERATOR,
+  email = process.env.CONTACT_EMAIL,
+) {
+  return (
+    !!operator?.trim() && !!email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  );
+}
 export const legalPages: Record<
   string,
   { title: string; paragraphs: string[]; ownerRequired?: boolean }
