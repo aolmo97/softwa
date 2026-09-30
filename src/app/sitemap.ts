@@ -7,6 +7,7 @@ import {
 } from "@/lib/discovery";
 import { siteUrl } from "@/lib/seo";
 import { operatorDetailsComplete } from "@/lib/legal";
+import { guides } from "@/lib/guides";
 export const dynamic = "force-dynamic";
 export default function sitemap(): MetadataRoute.Sitemap {
   const all = catalogue();
@@ -18,6 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/compare",
     "/about",
     "/methodology",
+    "/guides",
+    ...guides.map((g) => "/guides/" + g.slug),
     ...(operatorDetailsComplete()
       ? ["/privacy", "/cookies", "/terms", "/contact"]
       : []),

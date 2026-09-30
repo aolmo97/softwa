@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { catalogue, taxonomy } from "@/lib/repository";
 import { Breadcrumbs, SoftwareCard, EmptyState, JsonLd } from "@/components/ui";
 import { metadata as meta, itemList } from "@/lib/seo";
+import { categoryNotes } from "@/lib/category-notes";
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props) {
   const slug = (await params).slug;
@@ -20,6 +21,7 @@ export default async function Category({ params }: Props) {
   const c = taxonomy("categories").find((c) => c.slug === slug);
   if (!c) notFound();
   const items = catalogue().filter((s) => s.categories.includes(slug));
+  const note = categoryNotes[slug];
   return (
     <div className="container page-content">
       <Breadcrumbs
@@ -43,6 +45,18 @@ export default async function Category({ params }: Props) {
           No products have been published here yet. Explore an active category
           in the catalogue.
         </EmptyState>
+      )}
+      {note && items.length > 0 && (
+        <section className="prose">
+          <h2>How to choose {c.name.toLowerCase()} software</h2>
+          <p>{note.intro}</p>
+          <p>Questions worth answering before you decide:</p>
+          <ul>
+            {note.questions.map((q) => (
+              <li key={q}>{q}</li>
+            ))}
+          </ul>
+        </section>
       )}
       <JsonLd value={itemList(items)} />
     </div>

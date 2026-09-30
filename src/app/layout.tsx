@@ -51,6 +51,7 @@ export default async function RootLayout({
               <Link href="/software">Explore software</Link>
               <Link href="/categories">Categories</Link>
               <Link href="/compare">Compare</Link>
+              <Link href="/guides">Guides</Link>
             </nav>
             <Link className="button nav-cta" href="/find">
               Find my alternative <span aria-hidden="true">↗</span>
@@ -73,6 +74,7 @@ export default async function RootLayout({
               <div>
                 <Link href="/about">About</Link>
                 <Link href="/methodology">Our methodology</Link>
+                <Link href="/guides">Guides</Link>
                 <Link href="/contact">Contact</Link>
                 <Link href="/admin">Editorial admin</Link>
               </div>

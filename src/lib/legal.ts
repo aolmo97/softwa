@@ -10,7 +10,12 @@ export function operatorDetailsComplete(
 }
 export const legalPages: Record<
   string,
-  { title: string; paragraphs: string[]; ownerRequired?: boolean }
+  {
+    title: string;
+    paragraphs: string[];
+    sections?: { heading: string; paragraphs: string[] }[];
+    ownerRequired?: boolean;
+  }
 > = {
   about: {
     title: "Better software choices start with better information.",
@@ -18,6 +23,47 @@ export const legalPages: Record<
       "Software Alternative is a curated directory for discovering and comparing software. We focus on relevant alternatives, checkable sources and requirements that matter to the person choosing a tool.",
       "Our initial catalogue is intentionally small. Facts are recorded from official product pages and project documentation. Listings are not hands-on reviews, and inclusion does not imply endorsement.",
       "You can inspect a product’s evidence, filter the alternatives, or use Find my alternative to calculate a match against your preferences. We do not use an LLM to invent product details or scores.",
+    ],
+    sections: [
+      {
+        heading: "What you will find here",
+        paragraphs: [
+          "The catalogue lists software with the facts we can source: what it is for, which platforms it runs on, how it is priced and licensed, and what its official pages say about its strengths and limits. Alternative pages explain how two products overlap and where they differ. Comparison pages put two products side by side. The matching tool ranks candidates against the requirements you choose, and the guides explain how to make and carry out a switching decision.",
+          "We aim to be useful to people making a real decision: a freelancer replacing an expensive subscription, a small team looking for something it can host itself, or someone who simply wants to know whether a free tool can do the job.",
+        ],
+      },
+      {
+        heading: "How we gather information",
+        paragraphs: [
+          "Product facts come from official sources: the vendor’s product and pricing pages, documentation and, for open-source projects, the project’s own site or repository. Each source is recorded with its address, the date it was consulted, the fields it supports and any notes. A recent check of one field does not verify the whole product.",
+          "When a fact cannot be confirmed from an official source, we mark it as unknown. An unknown value is never treated as a “no”, and it is never filled in with a guess. Editors review records whose evidence is missing or old, and dates shown on the site are the dates of real consultations.",
+        ],
+      },
+      {
+        heading: "Independence and funding",
+        paragraphs: [
+          "Payment does not change how products are ranked. Scores, ordering and comparisons are calculated from the same recorded facts and the methodology published on this site. Sponsored listings, if any exist, are visibly labelled, and neither sponsorship nor affiliate commissions are inputs to the matching formula.",
+          "The site is run independently. It currently shows no advertisements and has no active affiliate programme. If advertising or affiliate links are introduced, they will be labelled, described in the affiliate disclosure and covered by the privacy and cookie information before they go live.",
+        ],
+      },
+      {
+        heading: "What we do not do",
+        paragraphs: [
+          "We do not run hands-on tests of every product, so listings are not reviews and inclusion is not an endorsement. We do not provide legal, security or financial advice, and our guides are general information. We do not accept payment to alter facts, hide limitations or change the order of results.",
+        ],
+      },
+      {
+        heading: "Corrections and feedback",
+        paragraphs: [
+          "Software changes quickly, and mistakes will happen. If you spot an outdated price, a missing platform or a wrong claim, tell us through the contact page and include the product name, the field concerned and an official source. We check the source, update the record with the new consultation date and keep a history of editorial changes.",
+        ],
+      },
+      {
+        heading: "Scope and limits",
+        paragraphs: [
+          "The catalogue is deliberately small and grows as we can verify products properly. It is currently written in English. We prefer a smaller catalogue with sourced facts over a large one built from scraped, unchecked data.",
+        ],
+      },
     ],
   },
   methodology: {

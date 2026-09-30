@@ -74,6 +74,9 @@ test("consented traffic reaches the protected dashboard and can be exported", as
     (await context.cookies()).find((cookie) => cookie.name === "sa_visitor")
       ?.value,
   ).toBe(visitor.value);
+  // In-flight analytics responses renew sa_visit with its old value, so let
+  // them settle before simulating expiry of the visit cookie.
+  await page.waitForLoadState("networkidle");
   await context.addCookies([
     { ...visit, expires: Math.floor(Date.now() / 1000) - 1 },
   ]);

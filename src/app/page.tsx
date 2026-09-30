@@ -4,6 +4,7 @@ import { comparisonSlug } from "@/lib/discovery";
 import { SearchSoftware } from "@/components/search";
 import { SoftwareCard, Mark, JsonLd } from "@/components/ui";
 import { itemList, metadata as meta } from "@/lib/seo";
+import { guides } from "@/lib/guides";
 export const metadata = meta(
   "Find the best software alternative for your needs",
   "Discover and compare software by price, platform, open source and the features that matter to you.",
@@ -202,6 +203,29 @@ export default function Home() {
               </Link>
             );
           })}
+        </div>
+      </section>
+      <section className="container section">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">GUIDES</span>
+            <h2>Think it through before you switch.</h2>
+            <p>Plain-language advice for evaluating and moving between tools.</p>
+          </div>
+          <Link className="text-link" href="/guides">
+            All guides ↗
+          </Link>
+        </div>
+        <div className="guide-grid">
+          {guides.slice(0, 3).map((g) => (
+            <article className="guide-card" key={g.slug}>
+              <span className="eyebrow">{g.topic.toUpperCase()}</span>
+              <h3>
+                <Link href={"/guides/" + g.slug}>{g.title}</Link>
+              </h3>
+              <p>{g.description}</p>
+            </article>
+          ))}
         </div>
       </section>
       <section className="container">

@@ -41,6 +41,14 @@ export default async function Information({ params }: Props) {
         {page.paragraphs.map((p) => (
           <p key={p}>{p}</p>
         ))}
+        {page.sections?.map((section) => (
+          <section key={section.heading}>
+            <h2>{section.heading}</h2>
+            {section.paragraphs.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+          </section>
+        ))}
         {operator && <p>Operator: {operator}</p>}
         {email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
           <p>

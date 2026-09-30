@@ -1840,3 +1840,45 @@ tr:last-child th {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+.prose ul {
+  margin: 18px 0;
+  padding-left: 22px;
+}
+.prose li {
+  margin: 8px 0;
+}
+.guide-meta {
+  color: var(--muted, #5f6b7a);
+  font-size: 14px;
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+.guide-card {
+  border: 1px solid #e3e7ee;
+  border-radius: 14px;
+  padding: 24px;
+  background: #fff;
+}
+.guide-card h2,
+.guide-card h3 {
+  font-size: 20px;
+  margin: 8px 0 10px;
+}
+.guide-card p {
+  margin: 0 0 12px;
+  line-height: 1.6;
+}
+.guide-related {
+  max-width: 790px;
+  margin: 45px 0 20px;
+  padding-top: 25px;
+  border-top: 1px solid #e3e7ee;
+}
+.guide-related ul {
+  padding-left: 20px;
+  line-height: 1.9;
+}

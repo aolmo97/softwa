@@ -59,3 +59,21 @@ export function itemList(items: SoftwareInput[]) {
     })),
   };
 }
+export function articleJson(a: {
+  title: string;
+  description: string;
+  path: string;
+  published: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: a.title,
+    description: a.description,
+    datePublished: a.published,
+    dateModified: a.published,
+    mainEntityOfPage: siteUrl() + a.path,
+    author: { "@type": "Organization", name: "Software Alternative" },
+    publisher: { "@type": "Organization", name: "Software Alternative" },
+  };
+}
