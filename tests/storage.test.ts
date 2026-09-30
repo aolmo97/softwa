@@ -41,7 +41,7 @@ describe("database and editorial validation", () => {
   it("applies migrations and seed idempotently", () => {
     migrate();
     seed();
-    expect(catalogue()).toHaveLength(24);
+    expect(catalogue()).toHaveLength(39);
     expect(db().prepare("SELECT COUNT(*) n FROM migrations").get()).toEqual({
       n: 3,
     });
@@ -83,7 +83,7 @@ describe("database and editorial validation", () => {
   });
   it("preserves data after reconnect", () => {
     closeDb();
-    expect(catalogue()).toHaveLength(24);
+    expect(catalogue()).toHaveLength(39);
   });
   it("enforces evidence and source dates before writes", () => {
     const s = listResource("software").find(

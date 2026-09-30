@@ -304,8 +304,8 @@ describe("filters and editorial relationships", () => {
   });
 });
 describe("data and SEO", () => {
-  it("validates all 24 seed records", () => {
-    expect(products).toHaveLength(24);
+  it("validates all 39 seed records", () => {
+    expect(products).toHaveLength(39);
     for (const s of products)
       expect(softwareSchema.safeParse(s).success, s.slug).toBe(true);
   });

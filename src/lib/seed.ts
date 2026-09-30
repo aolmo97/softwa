@@ -1,4 +1,9 @@
 import { enrichProduct, CONTENT_REVISION } from "./catalogue-content";
+import {
+  additionFeatureNames,
+  additionProducts,
+  additionRelations,
+} from "./catalogue-additions";
 import { db } from "./db";
 import {
   emptyFlags,
@@ -543,8 +548,9 @@ export function originalSeedProducts(): SoftwareInput[] {
   });
 }
 export function seedProducts(): SoftwareInput[] {
-  return originalSeedProducts().map(enrichProduct);
+  return [...originalSeedProducts().map(enrichProduct), ...additionProducts()];
 }
+const additionSlugs = new Set(additionProducts().map((p) => p.slug));
 const pairs: [string, string, string, boolean][] = [
   [
     "photoshop",
@@ -677,7 +683,7 @@ export function seed() {
           },
           "seed",
         );
-    for (const name of featureNames)
+    for (const name of [...featureNames, ...additionFeatureNames])
       if (!d.prepare("SELECT 1 FROM features WHERE slug=?").get(slugify(name)))
         saveResource(
           "features",
@@ -697,6 +703,7 @@ export function seed() {
         saveResource("software", s, "seed");
         continue;
       }
+      if (additionSlugs.has(s.slug)) continue; // reviewed once on 2026-09-30
       if (existing.sources.some((source) => source.id === CONTENT_REVISION)) continue;
       // Only upgrade untouched original seed records. Editorial changes win.
       const edited = d.prepare(
@@ -709,7 +716,7 @@ export function seed() {
         saveResource("software", { ...s, version: existing.version }, CONTENT_REVISION);
       }
     }
-    for (const [from, to, reason, comparison] of pairs) {
+    for (const [from, to, reason, comparison] of [...pairs, ...additionRelations]) {
       const id = from + "-to-" + to;
       if (!d.prepare("SELECT 1 FROM relationships WHERE id=?").get(id))
         saveResource(

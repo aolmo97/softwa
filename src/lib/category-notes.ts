@@ -42,6 +42,46 @@ export const categoryNotes: Record<string, CategoryNote> = {
       "How do seat types and team plans change the total price?",
     ],
   },
+  "office-suites": {
+    intro:
+      "Office suites are judged by how well they handle the documents you already have. Before comparing price, test real files: formatting, tables, macros and comments are where differences show. Decide whether you need cloud storage and real-time collaboration built in, and whether a free desktop suite covers the rest.",
+    questions: [
+      "Which file formats do colleagues and clients send me?",
+      "Do I need real-time co-editing and cloud storage, or only desktop apps?",
+      "Do I rely on macros, add-ins or advanced spreadsheet features?",
+      "What is the total yearly cost for everyone who needs a licence?",
+    ],
+  },
+  "audio-editing": {
+    intro:
+      "Audio tools range from simple recorders to full multitrack workstations. Match the tool to the job: cleaning a voice recording is a different task from mixing a multi-instrument project. Check plug-in support, format handling and how easily you can restore noisy recordings before deciding.",
+    questions: [
+      "Do I record, edit, mix, or restore audio, and how often?",
+      "Which file formats and plug-ins does my workflow need?",
+      "Will collaborators need my project files or only the exports?",
+      "Would a free editor cover this work before I pay for a subscription?",
+    ],
+  },
+  "3d": {
+    intro:
+      "3D software is a large investment of learning time, so choose around your pipeline. Consider whether your work is modeling, animation, motion graphics or rendering, which file formats you must exchange, and whether a studio or client dictates the tool. Free and paid suites can overlap heavily; test a real project.",
+    questions: [
+      "Is my main task modeling, animation, motion design or rendering?",
+      "Which file formats and render engines does my pipeline require?",
+      "Does a client or studio require a particular package?",
+      "What are the hardware and operating-system requirements?",
+    ],
+  },
+  analytics: {
+    intro:
+      "Web analytics tools differ in how much they collect, where the data lives and what consent they require. Decide what you actually need to know about your visitors, then weigh reporting depth against privacy and cost. Self-hosting gives control but adds maintenance, while hosted tools are simpler to run.",
+    questions: [
+      "Which questions must analytics answer for my site?",
+      "Do I need cookies, and what consent will my audience be asked for?",
+      "Would I host it myself or use a hosted service?",
+      "How does price change as my traffic grows?",
+    ],
+  },
   "password-managers": {
     intro:
       "A password manager holds the keys to your other accounts, so trust and recovery matter more than features. Compare how each product handles sharing, emergency access and account recovery, and decide whether a managed service or a self-hosted option fits the effort you can realistically sustain.",

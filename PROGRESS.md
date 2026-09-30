@@ -122,3 +122,11 @@ docker compose exec app node dist/db.cjs backup
 - Expanded `/about` with sourcing, independence/funding, limits and corrections sections, and added per-category buying notes (`src/lib/category-notes.ts`) on the nine active category pages.
 - Tests: `tests/guides.test.ts` checks unique slugs, minimum length and that every referenced product, comparison and category exists.
 - Reason: AdSense flagged another site on the same account as "low value content". `software-alternative.com` was added and verified in AdSense but review has NOT been requested. Approval is not guaranteed. The Google-certified CMP is still required before serving ads in the EEA.
+
+## Catalogue expansion — 2026-09-30
+- Added 15 products in `src/lib/catalogue-additions.ts` (39 total): LibreOffice, Microsoft 365, Audacity, Adobe Audition, Blender, Cinema 4D, darktable, Adobe Lightroom, Shotcut, KeePassXC, Proton Pass, Syncthing, Plausible Analytics, Matomo and Google Analytics. Four categories became active (Office Suites, Audio Editing, 3D, Analytics); 13 are active in total.
+- Sources: official product, pricing, download, system-requirement and licence pages read on 2026-09-30 (Microsoft 365 and Word pages read directly in the browser; the rest through page summaries requested as verbatim quotes). Every source records that date; the earlier 2026-09-29 dates were not reused.
+- Left unknown on purpose: Cinema 4D price; Proton Pass paid prices (placeholders on the page); Matomo cloud price and licence name; Shotcut, Plausible and Matomo licence/company; darktable and Syncthing pricing; Audition and Lightroom platform support beyond what the pages state; Neovim, Sublime Text, Mattermost, Autodesk Maya and Google Drive were considered but not added because their pages could not be read or verified.
+- 15 new relations (32 total, 27 comparison pages) so every product has at least one alternative. Seed remains idempotent; added products are inserted once and never overwritten by later seeds.
+- Verification: lint, typecheck, 69 unit tests, production build and 20/20 E2E passed. A fresh database seeded twice produced 39 products with one history row per product.
+- Incident: removing the temporary baseline worktree emptied `node_modules` (a junction to the real one). Dependencies were restored with `npm ci` from the lockfile; no tracked files were affected.
