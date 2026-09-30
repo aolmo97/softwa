@@ -1,0 +1,46 @@
+{
+  "name": "software-alternative",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "node scripts/start.cjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "db:migrate": "tsx scripts/db.ts migrate",
+    "db:seed": "tsx scripts/db.ts seed",
+    "admin:create": "tsx scripts/admin.ts",
+    "db:backup": "tsx scripts/db.ts backup",
+    "verify": "npm run lint && npm run typecheck && npm test && npm run build",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/**/*.ts\" \"scripts/**/*.ts\" \"e2e/**/*.ts\" \"*.ts\" \"*.mts\" \"*.mjs\" README.md PROGRESS.md AGENTS.md package.json tsconfig.json"
+  },
+  "dependencies": {
+    "better-sqlite3": "11.10.0",
+    "dotenv": "^18.0.1",
+    "next": "16.3.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@playwright/test": "^1.56.0",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "16.3.5",
+    "prettier": "3.6.2",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vite": "6.4.3",
+    "vitest": "4.1.11"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${PORT:-3000}:3000"
+    environment:
+      SITE_URL: ${SITE_URL:-http://localhost:3000}
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
+      SITE_OPERATOR: ${SITE_OPERATOR:-}
+      CONTACT_EMAIL: ${CONTACT_EMAIL:-}
+    volumes:
+      - catalogue:/app/data
+    stop_grace_period: 30s
+volumes:
+  catalogue:
