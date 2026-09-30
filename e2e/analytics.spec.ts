@@ -133,18 +133,26 @@ test("consented traffic reaches the protected dashboard and can be exported", as
   await expect(
     page.getByRole("heading", { name: "Most searched tools" }),
   ).toBeVisible();
-  await page.getByLabel("Period", { exact: true }).selectOption("week");
-  await page.getByLabel("Group by", { exact: true }).selectOption("week");
+  await page
+    .getByRole("combobox", { name: "Period", exact: true })
+    .selectOption("week");
+  await page
+    .getByRole("combobox", { name: "Group by", exact: true })
+    .selectOption("week");
   await page.getByRole("button", { name: "Update statistics" }).click();
   await expect(
     page.getByRole("heading", { name: "Visitors by week" }),
   ).toBeVisible();
-  await page.getByLabel("Group by", { exact: true }).selectOption("month");
+  await page
+    .getByRole("combobox", { name: "Group by", exact: true })
+    .selectOption("month");
   await page.getByRole("button", { name: "Update statistics" }).click();
   await expect(
     page.getByRole("heading", { name: "Visitors by month" }),
   ).toBeVisible();
-  await page.getByLabel("Period", { exact: true }).selectOption("custom");
+  await page
+    .getByRole("combobox", { name: "Period", exact: true })
+    .selectOption("custom");
   const today = new Date().toISOString().slice(0, 10);
   await page.getByLabel("From", { exact: true }).fill(today);
   await page.getByLabel("To", { exact: true }).fill(today);

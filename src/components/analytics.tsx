@@ -41,6 +41,8 @@ export function track(
     id: crypto.randomUUID(),
     name,
     path: location.pathname,
+    device:
+      innerWidth < 768 ? "mobile" : innerWidth < 1024 ? "tablet" : "desktop",
     ...(typeof properties.slug === "string" && properties.slug
       ? { slug: properties.slug }
       : {}),
@@ -57,12 +59,6 @@ export function track(
       ? {
           referrer:
             typeof properties.referrer === "string" ? properties.referrer : "",
-          device:
-            innerWidth < 768
-              ? "mobile"
-              : innerWidth < 1024
-                ? "tablet"
-                : "desktop",
         }
       : {}),
   };

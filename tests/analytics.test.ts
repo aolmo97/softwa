@@ -95,6 +95,37 @@ describe("first-party analytics", () => {
     expect(daily.trend).toHaveLength(7);
     expect(daily.trend[0].visitors).toBe(0);
   });
+  it("counts a visit that resumes with an action after inactivity or midnight", () => {
+    recordEvent(
+      event(),
+      "one",
+      "old-session",
+      new Date("2026-09-29T23:30:00Z"),
+    );
+    recordEvent(
+      event({ name: "search", results: 0 }),
+      "one",
+      "new-session",
+      now,
+    );
+    const today = analyticsSummary({ range: "day" }, now);
+    expect(today.totals).toMatchObject({
+      visitors: 1,
+      sessions: 1,
+      pageViews: 0,
+      searches: 1,
+    });
+    expect(today.trend[0]).toMatchObject({
+      visitors: 1,
+      sessions: 1,
+      pageViews: 0,
+    });
+    expect(analyticsSummary({ range: "week" }, now).totals).toMatchObject({
+      visitors: 1,
+      sessions: 2,
+      pageViews: 1,
+    });
+  });
   it("uses UTC boundaries and includes both custom endpoints", () => {
     recordEvent(event(), "one", "s1", new Date("2026-09-30T23:59:59Z"));
     const tomorrow = new Date("2026-10-01T01:00:00Z");
@@ -122,7 +153,7 @@ describe("first-party analytics", () => {
     const summary = analyticsSummary({}, now);
     expect(summary.totals).toMatchObject({
       pageViews: 0,
-      visitors: 0,
+      visitors: 1,
       noResultSearches: 1,
       matches: 1,
       noResultMatches: 1,

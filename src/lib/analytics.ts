@@ -252,8 +252,8 @@ export function analyticsSummary(
   const totals = d
     .prepare(
       `SELECT
-    COUNT(DISTINCT CASE WHEN event='page_view' THEN visitor_hash END) visitors,
-    COUNT(DISTINCT CASE WHEN event='page_view' THEN session_hash END) sessions,
+    COUNT(DISTINCT visitor_hash) visitors,
+    COUNT(DISTINCT session_hash) sessions,
     COUNT(CASE WHEN event='page_view' THEN 1 END) pageViews,
     COUNT(CASE WHEN event='search' THEN 1 END) searches,
     COUNT(CASE WHEN event='search' AND json_extract(metadata,'$.results')=0 THEN 1 END) noResultSearches,
@@ -287,7 +287,7 @@ export function analyticsSummary(
         : "day";
   const rows = d
     .prepare(
-      `SELECT ${bucketSQL} label, COUNT(*) pageViews, COUNT(DISTINCT visitor_hash) visitors, COUNT(DISTINCT session_hash) sessions FROM analytics_events WHERE day BETWEEN ? AND ? AND event='page_view' GROUP BY label ORDER BY label`,
+      `SELECT ${bucketSQL} label, COUNT(CASE WHEN event='page_view' THEN 1 END) pageViews, COUNT(DISTINCT visitor_hash) visitors, COUNT(DISTINCT session_hash) sessions FROM analytics_events WHERE day BETWEEN ? AND ? GROUP BY label ORDER BY label`,
     )
     .all(...args) as Array<{
     label: string;
@@ -332,10 +332,10 @@ export function analyticsSummary(
       "SELECT COALESCE(s.name,e.slug) label,COUNT(*) count FROM analytics_events e LEFT JOIN software s ON s.slug=e.slug WHERE e.day BETWEEN ? AND ? AND e.event IN ('external_website_click','affiliate_click') GROUP BY e.slug ORDER BY count DESC,label LIMIT 15",
     ),
     referrers: top(
-      "SELECT referrer label,COUNT(*) count FROM analytics_events WHERE id IN (SELECT MIN(id) FROM analytics_events WHERE day BETWEEN ? AND ? AND event='page_view' GROUP BY session_hash) GROUP BY referrer ORDER BY count DESC,label LIMIT 15",
+      "SELECT referrer label,COUNT(*) count FROM analytics_events WHERE id IN (SELECT MIN(id) FROM analytics_events WHERE day BETWEEN ? AND ? GROUP BY session_hash) GROUP BY referrer ORDER BY count DESC,label LIMIT 15",
     ),
     devices: top(
-      "SELECT device label,COUNT(*) count FROM analytics_events WHERE id IN (SELECT MIN(id) FROM analytics_events WHERE day BETWEEN ? AND ? AND event='page_view' GROUP BY session_hash) GROUP BY device ORDER BY count DESC,label",
+      "SELECT device label,COUNT(*) count FROM analytics_events WHERE id IN (SELECT MIN(id) FROM analytics_events WHERE day BETWEEN ? AND ? GROUP BY session_hash) GROUP BY device ORDER BY count DESC,label",
     ),
   };
 }

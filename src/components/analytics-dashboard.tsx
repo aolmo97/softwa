@@ -224,7 +224,7 @@ export function AnalyticsDashboard() {
               ? "First recorded activity: " + data.startedAt.slice(0, 10) + "."
               : "No activity has been recorded yet."}
           </p>
-          {!data.totals.pageViews && (
+          {!data.totals.visitors && (
             <div className="panel">
               <h3>No visits recorded in this period</h3>
               <p>
