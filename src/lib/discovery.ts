@@ -293,3 +293,31 @@ export function indexableLanding(landing: Landing, items: SoftwareInput[]) {
 export function comparisonSlug(a: string, b: string) {
   return [a, b].sort().join("-vs-");
 }
+// Alternatives pages with a single candidate mostly repeat the comparison page,
+// so they stay reachable but are not offered to search engines.
+export const minIndexableAlternatives = 2;
+export function indexableAlternatives(count: number) {
+  return count >= minIndexableAlternatives;
+}
+// Facts grouped from verified records only. A missing value is never treated
+// as "no": products without verified platforms are listed separately.
+export function alternativeInsights(items: SoftwareInput[]) {
+  const names = (test: (s: SoftwareInput) => boolean) =>
+    items.filter(test).map((s) => s.name);
+  const groups = [
+    ["Free entry option", names((s) => s.flags.freePlan === true)],
+    ["Open source", names((s) => s.flags.openSource === true)],
+    ["Can be self-hosted", names((s) => s.flags.selfHosted === true)],
+    ["Free trial", names((s) => s.flags.freeTrial === true)],
+    ["Windows", names((s) => s.platforms.includes("windows"))],
+    ["macOS", names((s) => s.platforms.includes("macos"))],
+    ["Linux", names((s) => s.platforms.includes("linux"))],
+    ["Web", names((s) => s.platforms.includes("web"))],
+  ] as const;
+  return {
+    groups: groups
+      .filter(([, list]) => list.length > 0)
+      .map(([label, list]) => ({ label, names: list })),
+    unverifiedPlatforms: names((s) => s.platforms.length === 0),
+  };
+}

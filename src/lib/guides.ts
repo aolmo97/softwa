@@ -518,3 +518,17 @@ export function guideWordCount(g: Guide) {
     .split(/\s+/)
     .filter(Boolean).length;
 }
+const guideByCategory: Record<string, string> = {
+  design: "switching-from-photoshop",
+  "photo-editing": "switching-from-photoshop",
+  productivity: "moving-your-notes-between-apps",
+  "password-managers": "password-manager-migration-checklist",
+  "cloud-storage": "self-hosting-vs-hosted-services",
+  "code-editors": "open-source-free-freemium-explained",
+};
+export function guideForCategories(categories: string[]) {
+  const slug =
+    categories.map((c) => guideByCategory[c]).find(Boolean) ??
+    "how-to-evaluate-a-software-alternative";
+  return guideBySlug(slug);
+}

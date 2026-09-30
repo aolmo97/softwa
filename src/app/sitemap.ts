@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { catalogue, taxonomy, relations, landings } from "@/lib/repository";
 import {
   alternativeCandidates,
+  indexableAlternatives,
   indexableLanding,
   comparisonSlug,
 } from "@/lib/discovery";
@@ -24,7 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...(operatorDetailsComplete()
       ? ["/privacy", "/cookies", "/terms", "/contact"]
       : []),
-    ...all.flatMap((s) => ["/software/" + s.slug, "/alternatives/" + s.slug]),
+    ...all.flatMap((s) => [
+      "/software/" + s.slug,
+      ...(indexableAlternatives(alternativeCandidates(s.slug, all, rel).length)
+        ? ["/alternatives/" + s.slug]
+        : []),
+    ]),
     ...taxonomy("categories")
       .filter((c) => all.some((s) => s.categories.includes(c.slug)))
       .map((c) => "/categories/" + c.slug),

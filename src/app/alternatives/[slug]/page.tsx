@@ -3,18 +3,24 @@ import { notFound } from "next/navigation";
 import { catalogue, getSoftware, relations, landings } from "@/lib/repository";
 import {
   alternativeCandidates,
+  comparisonSlug,
+  indexableAlternatives,
   parseFilters,
   indexableLanding,
 } from "@/lib/discovery";
 import { metadata as meta, itemList } from "@/lib/seo";
 import { Breadcrumbs, JsonLd, AffiliateDisclosure } from "@/components/ui";
 import { AlternativesExplorer } from "@/components/alternatives";
+import { AlternativesGuide } from "@/components/alternatives-guide";
 type Props = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 export async function generateMetadata({ params, searchParams }: Props) {
   const s = getSoftware((await params).slug);
+  const count = s
+    ? alternativeCandidates(s.slug, catalogue(), relations()).length
+    : 0;
   return s
     ? meta(
         s.name + " alternatives",
@@ -22,7 +28,8 @@ export async function generateMetadata({ params, searchParams }: Props) {
           s.name +
           " by verified features, price, platform and licensing.",
         "/alternatives/" + s.slug,
-        Object.keys(await searchParams).length > 0,
+        Object.keys(await searchParams).length > 0 ||
+          !indexableAlternatives(count),
       )
     : meta("Not found", "Software not found.", "/software", true);
 }
@@ -41,6 +48,21 @@ export default async function Alternatives({ params, searchParams }: Props) {
       )?.reason ?? "",
     ]),
   );
+  const comparisons = rel
+    .filter((r) => r.comparison && (r.from === s.slug || r.to === s.slug))
+    .flatMap((r) => {
+      const other = catalogue().find(
+        (x) => x.slug === (r.from === s.slug ? r.to : r.from),
+      );
+      return other
+        ? [
+            {
+              slug: comparisonSlug(r.from, r.to),
+              label: s.name + " vs " + other.name,
+            },
+          ]
+        : [];
+    });
   const editorial = landings().filter(
     (l) => l.software === s.slug && indexableLanding(l, items),
   );
@@ -76,6 +98,7 @@ export default async function Alternatives({ params, searchParams }: Props) {
         reasons={reasons}
         initial={parseFilters((await searchParams).filters)}
       />
+      <AlternativesGuide original={s} items={items} comparisons={comparisons} />
       <AffiliateDisclosure />
       <JsonLd value={itemList(items)} />
     </div>
